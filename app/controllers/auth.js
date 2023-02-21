@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
       },
     });
     res
-      .status(200)
+      .status(201)
       .json(
         responseSuccessWithData({ email: email, token: createTokenJWT(email) })
       );
