@@ -11,8 +11,8 @@ exports.isUserExist = async (email) => {
   return !!user;
 };
 
-exports.createTokenJWT = (email) => {
-  return jwt.sign({ email: email }, process.env.JWT_SECRET_KEY ?? "testing", {
+exports.createTokenJWT = (data) => {
+  return jwt.sign({ ...data }, process.env.JWT_SECRET_KEY ?? "testing", {
     expiresIn: "7d",
   });
 };

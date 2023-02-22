@@ -16,17 +16,18 @@ exports.register = async (req, res) => {
         .status(409)
         .json(responseErrorWithMessage(`Email ${email} is already registered`));
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         email,
         password,
       },
     });
-    res
-      .status(201)
-      .json(
-        responseSuccessWithData({ email: email, token: createTokenJWT(email) })
-      );
+    res.status(201).json(
+      responseSuccessWithData({
+        email: user.email,
+        token: createTokenJWT({ id_user: user.id_user, email: user.email }),
+      })
+    );
   } catch (error) {
     console.log(error);
     res.status(400).json(responseErrorWithDefaultMessage());
@@ -47,11 +48,12 @@ exports.login = async (req, res) => {
         .status(403)
         .json(responseErrorWithMessage(`Incorrect Email or Password`));
 
-    res
-      .status(200)
-      .json(
-        responseSuccessWithData({ email: email, token: createTokenJWT(email) })
-      );
+    res.status(200).json(
+      responseSuccessWithData({
+        email: user.email,
+        token: createTokenJWT({ id_user: user.id_user, email: user.email }),
+      })
+    );
   } catch (error) {
     console.log(error);
     res.status(400).json(responseErrorWithDefaultMessage());

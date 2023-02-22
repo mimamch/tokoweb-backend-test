@@ -5,7 +5,8 @@ const checkIsAuth = (req, res, next) => {
     let token = req.headers.authorization;
     if (!token) throw new Error();
     token = token.split(" ").pop();
-    jwt.verify(token, process.env.JWT_SECRET_KEY ?? "testing");
+    const user = jwt.verify(token, process.env.JWT_SECRET_KEY ?? "testing");
+    req.user = user;
     next();
   } catch (error) {
     res
